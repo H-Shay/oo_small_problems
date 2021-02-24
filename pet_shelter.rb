@@ -8,7 +8,7 @@ class Shelter
   end
 
   def add_pets(animal)
-    @pets << animal
+    pets << animal
   end 
 
   def print_unadopted_pets
@@ -34,6 +34,10 @@ class Shelter
       end
     end
   end 
+
+  def count_unadopted_pets
+    pets.size 
+  end
 end
 
 class Pet
@@ -96,5 +100,6 @@ shelter.add_pets(Asta)
 shelter.add_pets(Ben)
 
 shelter.print_unadopted_pets
+puts "The animal shelter has #{shelter.count_unadopted_pets} unadopted pets."
 
-puts "The Animal shelter has #{shelter.pets.size} adopted pets."
+
