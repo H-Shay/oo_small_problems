@@ -1,24 +1,32 @@
-require 'pry'
 class CircularQueue
-  attr_accessor :size, :tail, :head, :buffer
-
   def initialize(size)
-    @buffer = Array.new(size)
-    @size = size
-    @head = 0
+    @buffer = [nil] * size
+    @next_position = 0
+    @oldest_position = 0
   end
 
-  def enqueue(element)
-    next_index = (self.head + 1)%size
-    buffer[next_index] = element
-    self.head +=1
-  end 
-    
+  def enqueue(object)
+    unless @buffer[@next_position].nil?
+      @oldest_position = increment(@next_position)
+    end
+
+    @buffer[@next_position] = object
+    @next_position = increment(@next_position)
+  end
+
   def dequeue
-    remove_index = (self.head + size - 1)%size
-    buffer.delete_at(remove_index)
-  end 
-end 
+    value = @buffer[@oldest_position]
+    @buffer[@oldest_position] = nil
+    @oldest_position = increment(@oldest_position) unless value.nil?
+    value
+  end
+
+  private
+
+  def increment(position)
+    (position + 1) % @buffer.size
+  end
+end
 
 queue = CircularQueue.new(3)
 puts queue.dequeue == nil
